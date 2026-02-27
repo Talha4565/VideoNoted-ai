@@ -203,11 +203,11 @@ function downloadPdf() {
   window.open(`/api/export/pdf?video_id=${currentVideoId}`, "_blank");
 }
 
-// ── Process another ──────────────────────────────────────────────────────
+// ── Process another ──────────────────────────────────────────────────
 function processAnother() {
   $("urlInput").value = "";
   currentVideoId = null;
-  hide("resultsSection");
+  closeModal();
   clearError();
   $("urlInput").focus();
   window.scrollTo({ top: 0, behavior: "smooth" });
@@ -227,8 +227,14 @@ function clearError() {
 
 function setLoading(state) {
   const btn = $("generateBtn");
+  if (!btn) return;
   btn.disabled = state;
-  btn.textContent = state ? "Processing..." : "Generate Notes";
+  const loader = btn.querySelector('.btn-loader');
+  const text = btn.querySelector('.btn-text');
+  const arrow = btn.querySelector('.btn-arrow');
+  if (loader) loader.classList.toggle('hidden', !state);
+  if (text) text.style.opacity = state ? '0.5' : '1';
+  if (arrow) arrow.style.opacity = state ? '0' : '1';
 }
 
 function setLoadingMsg(msg) {
@@ -257,14 +263,99 @@ function activateStep(n) {
   setLoadingMsg(labels[n - 1] || "");
 }
 
-// ── FAQ accordion ─────────────────────────────────────────────────────────
+// ── FAQ accordion ─────────────────────────────────────────────────────
 document.addEventListener("DOMContentLoaded", () => {
-  document.querySelectorAll(".faq-question").forEach(q => {
-    q.addEventListener("click", () => {
-      const item = q.parentElement;
-      const isOpen = item.classList.contains("open");
-      document.querySelectorAll(".faq-item").forEach(i => i.classList.remove("open"));
-      if (!isOpen) item.classList.add("open");
+  // Navbar scroll
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    if (navbar) navbar.classList.toggle('scrolled', window.scrollY > 40);
+  });
+
+  // Mobile menu toggle
+  const navToggle = document.getElementById('navToggle');
+  const mobileMenu = document.getElementById('mobileMenu');
+  if (navToggle && mobileMenu) {
+    navToggle.addEventListener('click', () => mobileMenu.classList.toggle('open'));
+    document.querySelectorAll('.mobile-link').forEach(link => {
+      link.addEventListener('click', () => mobileMenu.classList.remove('open'));
+    });
+  }
+
+  // FAQ accordion
+  document.querySelectorAll('.faq-question').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const item = btn.closest('.faq-item');
+      const isOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+      if (!isOpen) item.classList.add('open');
+    });
+  });
+
+  // Billing toggle
+  const billingToggle = document.getElementById('billingToggle');
+  if (billingToggle) {
+    let yearly = false;
+    billingToggle.addEventListener('click', () => {
+      yearly = !yearly;
+      billingToggle.classList.toggle('active', yearly);
+      document.querySelectorAll('.price-amount').forEach(el => {
+        el.textContent = yearly ? el.dataset.yearly : el.dataset.monthly;
+      });
+      document.querySelectorAll('.toggle-label').forEach(el => {
+        el.classList.toggle('active', el.dataset.period === (yearly ? 'yearly' : 'monthly'));
+      });
+    });
+  }
+
+  // Page dots
+  const dots = document.querySelectorAll('.dot');
+  dots.forEach(dot => {
+    dot.addEventListener('click', () => {
+      const target = document.getElementById(dot.dataset.section);
+      if (target) target.scrollIntoView({ behavior: 'smooth' });
+    });
+  });
+
+  // Scroll observer for active dot + nav link
+  const sections = document.querySelectorAll('.page');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const id = entry.target.id;
+        dots.forEach(d => d.classList.toggle('active', d.dataset.section === id));
+        document.querySelectorAll('.nav-link').forEach(a => a.classList.toggle('active', a.dataset.section === id));
+      }
+    });
+  }, { threshold: 0.5 });
+  sections.forEach(s => observer.observe(s));
+
+  // Cursor spotlight
+  const spotlight = document.getElementById('cursorSpotlight');
+  if (spotlight) {
+    document.addEventListener('mousemove', e => {
+      spotlight.style.left = e.clientX + 'px';
+      spotlight.style.top = e.clientY + 'px';
+    });
+  }
+
+  // Reveal animations
+  const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('revealed');
+        revealObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+  document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+  // Nav link smooth scroll
+  document.querySelectorAll('.nav-link[href^="#"], .mobile-link[href^="#"]').forEach(link => {
+    link.addEventListener('click', e => {
+      e.preventDefault();
+      const target = document.querySelector(link.getAttribute('href'));
+      if (target) target.scrollIntoView({ behavior: 'smooth' });
+      mobileMenu && mobileMenu.classList.remove('open');
     });
   });
 });
