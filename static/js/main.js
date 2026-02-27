@@ -323,10 +323,13 @@ document.addEventListener("DOMContentLoaded", () => {
       if (entry.isIntersecting) {
         const id = entry.target.id;
         dots.forEach(d => d.classList.toggle('active', d.dataset.section === id));
-        document.querySelectorAll('.nav-link').forEach(a => a.classList.toggle('active', a.dataset.section === id));
+        document.querySelectorAll('.nav-link').forEach(a => {
+          const href = a.getAttribute('href');
+          a.classList.toggle('active', href === '#' + id || a.dataset.section === id);
+        });
       }
     });
-  }, { threshold: 0.5 });
+  }, { threshold: 0.4 });
   sections.forEach(s => observer.observe(s));
 
   // Cursor spotlight

@@ -74,7 +74,7 @@
     </nav>
     <div class="nav-actions">
       <button class="btn-ghost">Sign In</button>
-      <button class="btn-primary btn-sm btn-glow">
+      <button class="btn-primary btn-sm btn-glow" onclick="scrollToSection('page-pricing')">
         <span>Get Pro</span>
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
       </button>
@@ -94,7 +94,7 @@
     <a href="#page-faq" class="mobile-link">FAQ</a>
     <div class="mobile-actions">
       <button class="btn-ghost">Sign In</button>
-      <button class="btn-primary">Get Pro</button>
+      <button class="btn-primary" onclick="scrollToSection('page-pricing')">Get Pro</button>
     </div>
   </nav>
 </div>
@@ -115,11 +115,6 @@
     <section class="page page-hero" id="page-hero">
       <div class="page-inner">
         <div class="hero">
-          <div class="hero-badge reveal">
-            <span class="badge-pulse"></span>
-            <span class="badge-text">Powered by Google Gemini AI</span>
-            <span class="badge-new">NEW</span>
-          </div>
           <h1 class="hero-title reveal">Turn Any YouTube Video Into <span class="gradient-text">Smart Notes &amp; Blog Posts</span></h1>
           <p class="hero-subtitle reveal">Extract transcripts, AI summaries, key points, timestamps, blog drafts, and social posts — in seconds. No signup required.</p>
 
@@ -209,10 +204,6 @@
           </div>
         </div>
 
-        <div class="scroll-indicator">
-          <span class="scroll-text">Scroll to explore</span>
-          <div class="scroll-mouse"><div class="scroll-wheel"></div></div>
-        </div>
       </div>
     </section>
 
@@ -342,15 +333,6 @@
             <div class="faq-item reveal"><button class="faq-question"><span>Which videos are supported?</span><div class="faq-icon"><span class="icon-line"></span><span class="icon-line"></span></div></button><div class="faq-answer"><div class="faq-answer-inner"><p>Any public YouTube video that has auto-generated or manually added captions. This covers the vast majority of popular videos.</p></div></div></div>
             <div class="faq-item reveal"><button class="faq-question"><span>Is there a free version?</span><div class="faq-icon"><span class="icon-line"></span><span class="icon-line"></span></div></button><div class="faq-answer"><div class="faq-answer-inner"><p>Yes! The free tier lets you process 3 videos per day with no signup required. No credit card needed.</p></div></div></div>
             <div class="faq-item reveal"><button class="faq-question"><span>How accurate is the AI summary?</span><div class="faq-icon"><span class="icon-line"></span><span class="icon-line"></span></div></button><div class="faq-answer"><div class="faq-answer-inner"><p>We use Google Gemini 1.5 Flash, one of the most capable AI models available. Summaries are highly accurate for well-captioned videos.</p></div></div></div>
-          </div>
-        </div>
-        <div class="cta-section reveal">
-          <div class="cta-card">
-            <div class="cta-glow"></div>
-            <h2 class="cta-title">Ready to transform your video content?</h2>
-            <p class="cta-subtitle">Start extracting insights from YouTube videos in seconds.</p>
-            <button class="btn-cta" onclick="scrollToSection('page-hero')"><span>Get Started Free</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
-            <p class="cta-note">No credit card required • Free forever plan available</p>
           </div>
         </div>
         <footer class="footer">
