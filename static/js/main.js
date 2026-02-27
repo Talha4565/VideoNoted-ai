@@ -3,8 +3,11 @@ let currentVideoId = null;
 
 // ── DOM helpers ──────────────────────────────────────────────────────────
 const $ = id => document.getElementById(id);
-const show = id => $(id).classList.remove("hidden");
-const hide = id => $(id).classList.add("hidden");
+const show = id => { const el = $(id); if (el) el.classList.remove("hidden"); };
+const hide = id => { const el = $(id); if (el) el.classList.add("hidden"); };
+function openModal() { const m = $("resultsModal"); if (m) { m.classList.add("open"); document.body.style.overflow = "hidden"; } }
+function closeModal() { const m = $("resultsModal"); if (m) { m.classList.remove("open"); document.body.style.overflow = ""; } }
+function scrollToSection(id) { const el = document.getElementById(id); if (el) el.scrollIntoView({ behavior: "smooth" }); }
 
 // ── Entry point ──────────────────────────────────────────────────────────
 document.addEventListener("DOMContentLoaded", () => {
@@ -124,8 +127,7 @@ function renderResults(data) {
   // Blog Draft
   $("blogDraftText").textContent = data.blog_draft || "No blog draft available.";
 
-  show("resultsSection");
-  $("resultsSection").scrollIntoView({ behavior: "smooth", block: "start" });
+  openModal();
 }
 
 // ── Copy to clipboard ────────────────────────────────────────────────────

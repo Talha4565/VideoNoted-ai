@@ -3,14 +3,14 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>VideoNotes AI — Turn YouTube Videos Into Smart Notes & Blog Posts</title>
+  <title>VideoNotes AI — Turn YouTube Videos Into Smart Notes &amp; Blog Posts</title>
   <meta name="description" content="Paste any YouTube URL and instantly get AI-generated summaries, key points, timestamps, blog drafts, and Twitter threads. Free to use. No signup required." />
   <meta name="keywords" content="youtube transcript generator, summarize youtube video, AI video summarizer, youtube notes tool, convert youtube to blog, youtube to blog post, youtube summary free" />
   <link rel="canonical" href="https://videonotesai.com/" />
 
   <!-- Open Graph / Social sharing -->
   <meta property="og:title" content="VideoNotes AI — Turn YouTube Videos Into Smart Notes" />
-  <meta property="og:description" content="Paste any YouTube URL → Get AI summaries, key points, blog drafts & Twitter threads instantly. Free, no signup." />
+  <meta property="og:description" content="Paste any YouTube URL → Get AI summaries, key points, blog drafts &amp; Twitter threads instantly. Free, no signup." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://videonotesai.com/" />
   <meta property="og:image" content="https://videonotesai.com/static/og-image.png" />
@@ -21,13 +21,19 @@
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="VideoNotes AI — Turn YouTube Videos Into Smart Notes" />
-  <meta name="twitter:description" content="Paste any YouTube URL → Get AI summaries, key points, blog drafts & Twitter threads instantly. Free, no signup." />
+  <meta name="twitter:description" content="Paste any YouTube URL → Get AI summaries, key points, blog drafts &amp; Twitter threads instantly. Free, no signup." />
   <meta name="twitter:image" content="https://videonotesai.com/static/og-image.png" />
 
   <!-- Favicon -->
   <link rel="icon" type="image/svg+xml" href="/static/favicon.svg" />
   <link rel="shortcut icon" href="/static/favicon.svg" />
 
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <!-- Styles -->
   <link rel="stylesheet" href="/static/css/style.css" />
 
   <!-- Google Analytics — replace G-XXXXXXXXXX with your Measurement ID -->
@@ -41,303 +47,366 @@
 </head>
 <body>
 
-<!-- ── Header ─────────────────────────────────────────────────────────── -->
-<header>
-  <div class="container nav">
-    <div class="logo">VideoNotes AI</div>
-    <nav>
-      <a href="#how-it-works">How It Works</a>
-      <a href="#pricing">Pricing</a>
-      <a href="#faq">FAQ</a>
+<!-- Animated Background -->
+<div class="bg-gradient">
+  <div class="bg-grid"></div>
+  <div class="bg-orb bg-orb-1"></div>
+  <div class="bg-orb bg-orb-2"></div>
+  <div class="bg-orb bg-orb-3"></div>
+  <div class="bg-noise"></div>
+</div>
+<div class="cursor-spotlight" id="cursorSpotlight"></div>
+
+<!-- Floating Navbar -->
+<header class="navbar" id="navbar">
+  <div class="navbar-inner">
+    <a href="#page-hero" class="logo">
+      <div class="logo-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+      </div>
+      <span class="logo-text">VideoNotes<span class="logo-ai">.AI</span></span>
+    </a>
+    <nav class="nav-links">
+      <a href="#page-hero" class="nav-link active" data-section="page-hero">Home</a>
+      <a href="#page-features" class="nav-link" data-section="page-features">Features</a>
+      <a href="#page-pricing" class="nav-link" data-section="page-pricing">Pricing</a>
+      <a href="#page-faq" class="nav-link" data-section="page-faq">FAQ</a>
     </nav>
+    <div class="nav-actions">
+      <button class="btn-ghost">Sign In</button>
+      <button class="btn-primary btn-sm btn-glow">
+        <span>Get Pro</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </button>
+    </div>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
   </div>
 </header>
 
-<!-- ── Hero ───────────────────────────────────────────────────────────── -->
-<section class="hero">
-  <div class="container">
-    <h1>Turn Any YouTube Video Into Smart Notes &amp; Blog Posts</h1>
-    <p class="sub-headline">Extract transcripts, AI summaries, key points, timestamps, blog drafts, and social posts — instantly. Free. No signup.</p>
-
-    <div class="input-group">
-      <input type="text" id="urlInput" placeholder="Paste YouTube URL here..." autocomplete="off" spellcheck="false" />
-      <button class="btn-primary" id="generateBtn" onclick="processVideo()">Generate Notes</button>
+<!-- Mobile Menu -->
+<div class="mobile-menu" id="mobileMenu">
+  <nav class="mobile-nav">
+    <a href="#page-hero" class="mobile-link">Home</a>
+    <a href="#page-features" class="mobile-link">Features</a>
+    <a href="#page-pricing" class="mobile-link">Pricing</a>
+    <a href="#page-faq" class="mobile-link">FAQ</a>
+    <div class="mobile-actions">
+      <button class="btn-ghost">Sign In</button>
+      <button class="btn-primary">Get Pro</button>
     </div>
+  </nav>
+</div>
 
-    <p class="hero-note">Free to try &bull; No signup required &bull; ~10 second processing</p>
+<!-- Side Page Dots -->
+<div class="page-dots" id="pageDots">
+  <button class="dot active" data-section="page-hero" aria-label="Home"><span class="dot-inner"></span><span class="dot-label">Home</span></button>
+  <button class="dot" data-section="page-features" aria-label="Features"><span class="dot-inner"></span><span class="dot-label">Features</span></button>
+  <button class="dot" data-section="page-pricing" aria-label="Pricing"><span class="dot-inner"></span><span class="dot-label">Pricing</span></button>
+  <button class="dot" data-section="page-faq" aria-label="FAQ"><span class="dot-inner"></span><span class="dot-label">FAQ</span></button>
+</div>
 
-    <!-- Error message -->
-    <div id="errorMsg" class="hidden"></div>
+<!-- Main Scroll Container -->
+<main class="scroll-container" id="scrollContainer">
+  <div id="page-wrapper">
+
+    <!-- PAGE 1: HERO -->
+    <section class="page page-hero" id="page-hero">
+      <div class="page-inner">
+        <div class="hero">
+          <div class="hero-badge reveal">
+            <span class="badge-pulse"></span>
+            <span class="badge-text">Powered by Google Gemini AI</span>
+            <span class="badge-new">NEW</span>
+          </div>
+          <h1 class="hero-title reveal">Turn Any YouTube Video Into <span class="gradient-text">Smart Notes &amp; Blog Posts</span></h1>
+          <p class="hero-subtitle reveal">Extract transcripts, AI summaries, key points, timestamps, blog drafts, and social posts — in seconds. No signup required.</p>
+
+          <div class="input-card reveal">
+            <div class="input-glow"></div>
+            <div class="input-inner">
+              <div class="input-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z"/>
+                  <polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"/>
+                </svg>
+              </div>
+              <input type="text" id="urlInput" class="input-field" placeholder="Paste YouTube URL here..." autocomplete="off" spellcheck="false" />
+              <button class="btn-generate" id="generateBtn">
+                <span class="btn-text">Generate Notes</span>
+                <span class="btn-loader hidden">
+                  <svg class="spinner-svg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="3" fill="none" stroke-dasharray="32" stroke-linecap="round"/></svg>
+                </span>
+                <svg class="btn-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+              </button>
+            </div>
+            <div class="input-trust">
+              <span class="trust-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>Free to try</span>
+              <span class="trust-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>No signup</span>
+              <span class="trust-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>~10s processing</span>
+            </div>
+          </div>
+
+          <div id="errorMsg" class="error-message hidden"></div>
+
+          <!-- Loading State -->
+          <div id="loadingState" class="loading-state hidden">
+            <div class="loading-orb">
+              <div class="orb-ring"></div><div class="orb-ring"></div><div class="orb-ring"></div>
+              <div class="orb-core"></div>
+            </div>
+            <p class="loading-text" id="loadingMsg">Extracting transcript...</p>
+            <div class="loading-progress"><div class="progress-bar" id="progressBar"></div></div>
+          </div>
+
+          <div class="trust-strip reveal">
+            <p class="trust-label">Trusted by students, creators &amp; founders</p>
+            <div class="trust-logos">
+              <div class="trust-stat"><span class="stat-number">50K+</span><span class="stat-label">Videos Processed</span></div>
+              <div class="trust-divider"></div>
+              <div class="trust-stat"><span class="stat-number">12K+</span><span class="stat-label">Happy Users</span></div>
+              <div class="trust-divider"></div>
+              <div class="trust-stat"><span class="stat-number">4.9★</span><span class="stat-label">User Rating</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- How It Works -->
+        <div class="how-it-works">
+          <div class="section-header reveal">
+            <span class="section-badge">Simple Process</span>
+            <h2 class="section-title">How It Works</h2>
+            <p class="section-subtitle">Three simple steps to transform any video</p>
+          </div>
+          <div class="steps-timeline">
+            <div class="step reveal" data-step="1">
+              <div class="step-connector"></div>
+              <div class="step-number"><span>01</span></div>
+              <div class="step-content">
+                <div class="step-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></div>
+                <h3 class="step-title">Paste a YouTube Link</h3>
+                <p class="step-desc">Copy the URL from any public YouTube video and paste it in the input box above.</p>
+              </div>
+            </div>
+            <div class="step reveal" data-step="2">
+              <div class="step-connector"></div>
+              <div class="step-number"><span>02</span></div>
+              <div class="step-content">
+                <div class="step-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg></div>
+                <h3 class="step-title">AI Analyzes Content</h3>
+                <p class="step-desc">We extract the transcript and run it through Google Gemini AI in seconds.</p>
+              </div>
+            </div>
+            <div class="step reveal" data-step="3">
+              <div class="step-number"><span>03</span></div>
+              <div class="step-content">
+                <div class="step-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></div>
+                <h3 class="step-title">Get Structured Content</h3>
+                <p class="step-desc">Download notes, copy summaries, or use the blog draft directly in your workflow.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="scroll-indicator">
+          <span class="scroll-text">Scroll to explore</span>
+          <div class="scroll-mouse"><div class="scroll-wheel"></div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PAGE 2: FEATURES -->
+    <section class="page page-features" id="page-features">
+      <div class="page-inner">
+        <div class="features-section">
+          <div class="section-header reveal">
+            <span class="section-badge">Powerful Features</span>
+            <h2 class="section-title">Everything You Get</h2>
+            <p class="section-subtitle">All the tools you need to transform video content into actionable resources</p>
+          </div>
+          <div class="features-grid">
+            <div class="feature-card reveal"><div class="feature-icon-wrap"><div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></div></div><h3 class="feature-title">AI Summary</h3><p class="feature-desc">Comprehensive overview of video content in seconds</p></div>
+            <div class="feature-card reveal"><div class="feature-icon-wrap"><div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></div></div><h3 class="feature-title">Key Points</h3><p class="feature-desc">Bullet-pointed main ideas for quick reference</p></div>
+            <div class="feature-card reveal"><div class="feature-icon-wrap"><div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div></div><h3 class="feature-title">Timestamps</h3><p class="feature-desc">Navigate to specific moments instantly</p></div>
+            <div class="feature-card reveal"><div class="feature-icon-wrap"><div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div></div><h3 class="feature-title">Key Takeaways</h3><p class="feature-desc">Actionable insights you can use immediately</p></div>
+            <div class="feature-card reveal"><div class="feature-icon-wrap"><div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"/></svg></div></div><h3 class="feature-title">Twitter Hooks</h3><p class="feature-desc">Ready-to-post viral thread starters</p></div>
+            <div class="feature-card reveal"><div class="feature-icon-wrap"><div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></div></div><h3 class="feature-title">Blog Draft</h3><p class="feature-desc">SEO-ready article draft in one click</p></div>
+            <div class="feature-card reveal"><div class="feature-icon-wrap"><div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></div></div><h3 class="feature-title">TXT Download</h3><p class="feature-desc">Export all content to a clean text file</p></div>
+            <div class="feature-card reveal"><div class="feature-icon-wrap"><div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></div></div><h3 class="feature-title">Copy to Clipboard</h3><p class="feature-desc">One-click copy for any section</p></div>
+          </div>
+        </div>
+        <div class="comparison-section">
+          <div class="section-header reveal">
+            <span class="section-badge">Why Choose Us</span>
+            <h2 class="section-title">Compare The Difference</h2>
+          </div>
+          <div class="comparison-table reveal">
+            <div class="comparison-header"><div class="comparison-feature">Feature</div><div class="comparison-us">VideoNotes AI</div><div class="comparison-others">Others</div></div>
+            <div class="comparison-row"><div class="comparison-feature">Processing Speed</div><div class="comparison-us"><span class="check-yes">~10 seconds</span></div><div class="comparison-others"><span class="check-no">2-5 minutes</span></div></div>
+            <div class="comparison-row"><div class="comparison-feature">No Signup Required</div><div class="comparison-us"><span class="check-yes">✓</span></div><div class="comparison-others"><span class="check-no">✗</span></div></div>
+            <div class="comparison-row"><div class="comparison-feature">Blog Draft Generation</div><div class="comparison-us"><span class="check-yes">✓</span></div><div class="comparison-others"><span class="check-no">✗</span></div></div>
+            <div class="comparison-row"><div class="comparison-feature">Twitter Hooks</div><div class="comparison-us"><span class="check-yes">✓</span></div><div class="comparison-others"><span class="check-no">✗</span></div></div>
+            <div class="comparison-row"><div class="comparison-feature">Free Tier</div><div class="comparison-us"><span class="check-yes">3 videos/day</span></div><div class="comparison-others"><span class="check-no">Limited trial</span></div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PAGE 3: PRICING -->
+    <section class="page page-pricing" id="page-pricing">
+      <div class="page-inner">
+        <div class="pricing-section">
+          <div class="section-header reveal">
+            <span class="section-badge">Simple Pricing</span>
+            <h2 class="section-title">Choose Your Plan</h2>
+            <p class="section-subtitle">Start free, upgrade when you need more power</p>
+          </div>
+          <div class="billing-toggle reveal">
+            <span class="toggle-label" data-period="monthly">Monthly</span>
+            <button class="toggle-switch" id="billingToggle" aria-label="Toggle billing period"><span class="toggle-knob"></span></button>
+            <span class="toggle-label" data-period="yearly">Yearly <span class="toggle-save">Save 20%</span></span>
+          </div>
+          <div class="pricing-grid">
+            <div class="pricing-card reveal" data-plan="free">
+              <div class="pricing-header">
+                <h3 class="pricing-name">Free</h3>
+                <div class="pricing-price"><span class="price-currency">$</span><span class="price-amount" data-monthly="0" data-yearly="0">0</span><span class="price-period">/ forever</span></div>
+                <p class="pricing-desc">Perfect to get started</p>
+              </div>
+              <ul class="pricing-features">
+                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><polyline points="20 6 9 17 4 12"/></svg>3 videos per day</li>
+                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><polyline points="20 6 9 17 4 12"/></svg>AI Summary</li>
+                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><polyline points="20 6 9 17 4 12"/></svg>Key Points</li>
+                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><polyline points="20 6 9 17 4 12"/></svg>Timestamps</li>
+                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><polyline points="20 6 9 17 4 12"/></svg>TXT Download</li>
+              </ul>
+              <button class="btn-pricing" onclick="scrollToSection('page-hero')">Get Started Free</button>
+            </div>
+            <div class="pricing-card popular reveal" data-plan="pro">
+              <div class="popular-badge"><span class="badge-star">★</span> Most Popular</div>
+              <div class="pricing-glow"></div>
+              <div class="pricing-header">
+                <h3 class="pricing-name">Pro</h3>
+                <div class="pricing-price"><span class="price-currency">$</span><span class="price-amount" data-monthly="12" data-yearly="10">12</span><span class="price-period">/ month</span></div>
+                <p class="pricing-desc">For creators &amp; students</p>
+              </div>
+              <ul class="pricing-features">
+                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><polyline points="20 6 9 17 4 12"/></svg>50 videos per month</li>
+                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><polyline points="20 6 9 17 4 12"/></svg>Full repurposing suite</li>
+                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><polyline points="20 6 9 17 4 12"/></svg>Blog draft generator</li>
+                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><polyline points="20 6 9 17 4 12"/></svg>Twitter threads</li>
+                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><polyline points="20 6 9 17 4 12"/></svg>No ads</li>
+                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><polyline points="20 6 9 17 4 12"/></svg>Priority support</li>
+              </ul>
+              <button class="btn-pricing primary">Upgrade to Pro <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+            </div>
+            <div class="pricing-card reveal" data-plan="creator">
+              <div class="pricing-header">
+                <h3 class="pricing-name">Creator+</h3>
+                <div class="pricing-price"><span class="price-currency">$</span><span class="price-amount" data-monthly="29" data-yearly="24">29</span><span class="price-period">/ month</span></div>
+                <p class="pricing-desc">For agencies &amp; power users</p>
+              </div>
+              <ul class="pricing-features">
+                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><polyline points="20 6 9 17 4 12"/></svg>Unlimited videos</li>
+                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><polyline points="20 6 9 17 4 12"/></svg>Multi-language (soon)</li>
+                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><polyline points="20 6 9 17 4 12"/></svg>Save history</li>
+                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><polyline points="20 6 9 17 4 12"/></svg>API access</li>
+                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><polyline points="20 6 9 17 4 12"/></svg>Priority processing</li>
+                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><polyline points="20 6 9 17 4 12"/></svg>Dedicated support</li>
+              </ul>
+              <button class="btn-pricing">Contact Sales</button>
+            </div>
+          </div>
+          <div class="guarantee reveal">
+            <div class="guarantee-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg></div>
+            <div class="guarantee-text"><strong>30-Day Money-Back Guarantee</strong><span>Not satisfied? Get a full refund, no questions asked.</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PAGE 4: FAQ + FOOTER -->
+    <section class="page page-faq" id="page-faq">
+      <div class="page-inner">
+        <div class="faq-section">
+          <div class="section-header reveal">
+            <span class="section-badge">Got Questions?</span>
+            <h2 class="section-title">Frequently Asked Questions</h2>
+            <p class="section-subtitle">Everything you need to know about VideoNotes AI</p>
+          </div>
+          <div class="faq-list">
+            <div class="faq-item reveal"><button class="faq-question"><span>Is this legal?</span><div class="faq-icon"><span class="icon-line"></span><span class="icon-line"></span></div></button><div class="faq-answer"><div class="faq-answer-inner"><p>Yes. We only access publicly available transcripts/captions that YouTube makes available. We do not download, host, or redistribute any video content.</p></div></div></div>
+            <div class="faq-item reveal"><button class="faq-question"><span>Do you download videos?</span><div class="faq-icon"><span class="icon-line"></span><span class="icon-line"></span></div></button><div class="faq-answer"><div class="faq-answer-inner"><p>No. We never download or store any video files. We only process the text transcript data that YouTube provides publicly.</p></div></div></div>
+            <div class="faq-item reveal"><button class="faq-question"><span>What if a transcript is unavailable?</span><div class="faq-icon"><span class="icon-line"></span><span class="icon-line"></span></div></button><div class="faq-answer"><div class="faq-answer-inner"><p>Some videos don't have captions enabled. In that case, we'll show a clear error message. Try a video that has subtitles or auto-captions enabled.</p></div></div></div>
+            <div class="faq-item reveal"><button class="faq-question"><span>Which videos are supported?</span><div class="faq-icon"><span class="icon-line"></span><span class="icon-line"></span></div></button><div class="faq-answer"><div class="faq-answer-inner"><p>Any public YouTube video that has auto-generated or manually added captions. This covers the vast majority of popular videos.</p></div></div></div>
+            <div class="faq-item reveal"><button class="faq-question"><span>Is there a free version?</span><div class="faq-icon"><span class="icon-line"></span><span class="icon-line"></span></div></button><div class="faq-answer"><div class="faq-answer-inner"><p>Yes! The free tier lets you process 3 videos per day with no signup required. No credit card needed.</p></div></div></div>
+            <div class="faq-item reveal"><button class="faq-question"><span>How accurate is the AI summary?</span><div class="faq-icon"><span class="icon-line"></span><span class="icon-line"></span></div></button><div class="faq-answer"><div class="faq-answer-inner"><p>We use Google Gemini 1.5 Flash, one of the most capable AI models available. Summaries are highly accurate for well-captioned videos.</p></div></div></div>
+          </div>
+        </div>
+        <div class="cta-section reveal">
+          <div class="cta-card">
+            <div class="cta-glow"></div>
+            <h2 class="cta-title">Ready to transform your video content?</h2>
+            <p class="cta-subtitle">Start extracting insights from YouTube videos in seconds.</p>
+            <button class="btn-cta" onclick="scrollToSection('page-hero')"><span>Get Started Free</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+            <p class="cta-note">No credit card required • Free forever plan available</p>
+          </div>
+        </div>
+        <footer class="footer">
+          <div class="footer-main">
+            <div class="footer-brand">
+              <a href="#page-hero" class="logo"><div class="logo-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg></div><span class="logo-text">VideoNotes<span class="logo-ai">.AI</span></span></a>
+              <p class="footer-tagline">Transform video content into actionable insights with the power of AI.</p>
+            </div>
+            <div class="footer-links">
+              <div class="footer-col"><h4>Product</h4><a href="#page-hero">Home</a><a href="#page-features">Features</a><a href="#page-pricing">Pricing</a><a href="#page-faq">FAQ</a></div>
+              <div class="footer-col"><h4>Legal</h4><a href="/privacy">Privacy Policy</a><a href="/terms">Terms of Service</a><a href="/dmca">DMCA</a></div>
+              <div class="footer-col"><h4>Support</h4><a href="mailto:contact@videonotesai.com">Contact</a></div>
+            </div>
+          </div>
+          <div class="footer-bottom">
+            <p class="footer-disclaimer">This tool extracts publicly available transcripts for educational and productivity purposes. We do not host or distribute copyrighted video content. YouTube® is a trademark of Google LLC.</p>
+            <p class="footer-copyright">&copy; 2026 VideoNotes AI. All rights reserved.</p>
+          </div>
+        </footer>
+      </div>
+    </section>
+
   </div>
-</section>
+</main>
 
-<!-- ── Loading State ──────────────────────────────────────────────────── -->
-<div id="loadingState" class="container hidden">
-  <div class="spinner"></div>
-  <p id="loadingMsg">Extracting transcript...</p>
-  <div class="loading-steps">
-    <div class="loading-step" id="step1">
-      <span class="step-dot active"></span>
-      <span>Extracting transcript</span>
-    </div>
-    <div class="loading-step" id="step2">
-      <span class="step-dot"></span>
-      <span>Generating AI summary</span>
-    </div>
-    <div class="loading-step" id="step3">
-      <span class="step-dot"></span>
-      <span>Building your content</span>
-    </div>
-    <div class="loading-step" id="step4">
-      <span class="step-dot"></span>
-      <span>Almost done...</span>
+<!-- Results Modal -->
+<div class="modal" id="resultsModal">
+  <div class="modal-backdrop" onclick="closeModal()"></div>
+  <div class="modal-container">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="modal-title"><span class="modal-icon">✨</span><h2>Your Content is Ready</h2></div>
+        <button class="modal-close" onclick="closeModal()" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
+      </div>
+      <!-- Video Thumbnail in Modal -->
+      <div id="videoThumb" class="modal-thumb hidden">
+        <img id="videoThumbImg" src="" alt="Video thumbnail" class="modal-thumb-img" />
+        <div id="videoThumbTitle" class="modal-thumb-title"></div>
+      </div>
+      <div class="modal-actions">
+        <button class="btn-action" onclick="copyAll()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>Copy All</button>
+        <button class="btn-action primary" onclick="downloadTxt()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Download TXT</button>
+        <button class="btn-action success" onclick="downloadPdf()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Save as PDF</button>
+        <button class="btn-action" onclick="processAnother()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>New Video</button>
+      </div>
+      <div class="modal-body">
+        <div class="result-card"><div class="result-header"><div class="result-title"><span class="result-emoji">📝</span>Summary</div><button class="btn-copy" onclick="copySection('summaryText', this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span>Copy</span></button></div><div class="result-body"><p id="summaryText"></p></div></div>
+        <div class="result-card"><div class="result-header"><div class="result-title"><span class="result-emoji">🎯</span>Key Points</div><button class="btn-copy" onclick="copySection('keyPointsList', this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span>Copy</span></button></div><div class="result-body"><ul class="result-list bullet" id="keyPointsList"></ul></div></div>
+        <div class="result-card"><div class="result-header"><div class="result-title"><span class="result-emoji">⏱️</span>Timestamps</div><button class="btn-copy" onclick="copySection('timestampsList', this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span>Copy</span></button></div><div class="result-body"><ul class="result-list timestamps" id="timestampsList"></ul></div></div>
+        <div class="result-card"><div class="result-header"><div class="result-title"><span class="result-emoji">💡</span>Key Takeaways</div><button class="btn-copy" onclick="copySection('takeawaysList', this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span>Copy</span></button></div><div class="result-body"><ol class="result-list numbered" id="takeawaysList"></ol></div></div>
+        <div class="result-card"><div class="result-header"><div class="result-title"><span class="result-emoji">🐦</span>Twitter / X Hooks</div><button class="btn-copy" onclick="copySection('hooksList', this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span>Copy</span></button></div><div class="result-body"><ul class="result-list bullet" id="hooksList"></ul></div></div>
+        <div class="result-card"><div class="result-header"><div class="result-title"><span class="result-emoji">📄</span>Blog Draft</div><button class="btn-copy" onclick="copySection('blogDraftText', this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span>Copy</span></button></div><div class="result-body"><p id="blogDraftText" class="blog-text"></p></div></div>
+      </div>
     </div>
   </div>
 </div>
-
-<!-- ── Results Section ────────────────────────────────────────────────── -->
-<section id="resultsSection" class="container hidden">
-
-  <!-- Video Thumbnail -->
-  <div id="videoThumb" class="video-thumb-wrap hidden">
-    <img id="videoThumbImg" src="" alt="Video thumbnail" class="video-thumb-img" />
-    <div id="videoThumbTitle" class="video-thumb-title"></div>
-  </div>
-
-  <div class="result-header">
-    <h2>✅ Your Content is Ready</h2>
-    <div class="result-actions">
-      <button class="btn-copy-all" onclick="copyAll()">📋 Copy All</button>
-      <button class="btn-download" onclick="downloadTxt()">📥 Download TXT</button>
-      <button class="btn-download" onclick="downloadPdf()" style="background:#10b981;">🖨️ Save as PDF</button>
-      <button class="btn-secondary" onclick="processAnother()">🔄 Process Another</button>
-    </div>
-  </div>
-
-  <!-- Summary -->
-  <div class="result-card">
-    <div class="card-header">
-      <div class="card-title">📝 Summary</div>
-      <button class="btn-copy" onclick="copySection('summaryText', this)">Copy</button>
-    </div>
-    <div class="card-body">
-      <p id="summaryText"></p>
-    </div>
-  </div>
-
-  <!-- Key Points -->
-  <div class="result-card">
-    <div class="card-header">
-      <div class="card-title">🎯 Key Points</div>
-      <button class="btn-copy" onclick="copySection('keyPointsList', this)">Copy</button>
-    </div>
-    <div class="card-body">
-      <ul class="bullet-list" id="keyPointsList"></ul>
-    </div>
-  </div>
-
-  <!-- Timestamps -->
-  <div class="result-card">
-    <div class="card-header">
-      <div class="card-title">⏱️ Timestamps</div>
-      <button class="btn-copy" onclick="copySection('timestampsList', this)">Copy</button>
-    </div>
-    <div class="card-body">
-      <ul class="timestamp-list" id="timestampsList"></ul>
-    </div>
-  </div>
-
-  <!-- Takeaways -->
-  <div class="result-card">
-    <div class="card-header">
-      <div class="card-title">💡 Key Takeaways</div>
-      <button class="btn-copy" onclick="copySection('takeawaysList', this)">Copy</button>
-    </div>
-    <div class="card-body">
-      <ul class="takeaway-list" id="takeawaysList"></ul>
-    </div>
-  </div>
-
-  <!-- Twitter Hooks -->
-  <div class="result-card">
-    <div class="card-header">
-      <div class="card-title">🐦 Twitter / X Hooks</div>
-      <button class="btn-copy" onclick="copySection('hooksList', this)">Copy</button>
-    </div>
-    <div class="card-body">
-      <ul class="bullet-list" id="hooksList"></ul>
-    </div>
-  </div>
-
-  <!-- Blog Draft -->
-  <div class="result-card">
-    <div class="card-header">
-      <div class="card-title">📄 Blog Draft</div>
-      <button class="btn-copy" onclick="copySection('blogDraftText', this)">Copy</button>
-    </div>
-    <div class="card-body">
-      <p id="blogDraftText" class="blog-draft"></p>
-    </div>
-  </div>
-
-  <div style="text-align:center; margin-top: 24px;">
-    <button class="btn-secondary" onclick="processAnother()">🔄 Process Another Video</button>
-  </div>
-
-  <!-- AdSense Slot (add your unit ID when approved) -->
-  <!-- <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-XXXXXXXX" data-ad-slot="XXXXXXXX" data-ad-format="auto"></ins> -->
-
-</section>
-
-<!-- ── How It Works ───────────────────────────────────────────────────── -->
-<section class="how-it-works" id="how-it-works">
-  <div class="container">
-    <h2>How It Works</h2>
-    <div class="steps">
-      <div class="step">
-        <div class="step-icon">🔗</div>
-        <h3>1. Paste a YouTube Link</h3>
-        <p>Copy the URL from any public YouTube video and paste it above.</p>
-      </div>
-      <div class="step">
-        <div class="step-icon">🤖</div>
-        <h3>2. AI Analyzes It</h3>
-        <p>We extract the transcript and run it through Google Gemini AI in seconds.</p>
-      </div>
-      <div class="step">
-        <div class="step-icon">📋</div>
-        <h3>3. Get Structured Content</h3>
-        <p>Download notes, copy summaries, or use the blog draft directly.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ── Features ───────────────────────────────────────────────────────── -->
-<section class="features">
-  <div class="container">
-    <h2>Everything You Get</h2>
-    <div class="features-grid">
-      <div class="feature-item"><span>📝</span>AI Summary</div>
-      <div class="feature-item"><span>🎯</span>Key Points</div>
-      <div class="feature-item"><span>⏱️</span>Timestamps</div>
-      <div class="feature-item"><span>💡</span>Key Takeaways</div>
-      <div class="feature-item"><span>🐦</span>Twitter Hooks</div>
-      <div class="feature-item"><span>📄</span>Blog Draft</div>
-      <div class="feature-item"><span>📥</span>TXT Download</div>
-      <div class="feature-item"><span>📋</span>Copy to Clipboard</div>
-    </div>
-  </div>
-</section>
-
-<!-- ── Pricing ────────────────────────────────────────────────────────── -->
-<section class="pricing" id="pricing">
-  <div class="container">
-    <h2>Simple, Transparent Pricing</h2>
-    <div class="pricing-grid">
-
-      <div class="pricing-card">
-        <h3>Free</h3>
-        <div class="price">$0 <span>/ forever</span></div>
-        <p>Perfect to get started</p>
-        <ul>
-          <li>3 videos per day</li>
-          <li>AI Summary</li>
-          <li>Key Points</li>
-          <li>Timestamps</li>
-          <li>TXT Download</li>
-        </ul>
-      </div>
-
-      <div class="pricing-card popular">
-        <div class="popular-badge">Most Popular</div>
-        <h3>Pro</h3>
-        <div class="price">$12 <span>/ month</span></div>
-        <p>For creators &amp; students</p>
-        <ul>
-          <li>50 videos per month</li>
-          <li>Full repurposing suite</li>
-          <li>Blog draft generator</li>
-          <li>Twitter threads</li>
-          <li>No ads</li>
-        </ul>
-      </div>
-
-      <div class="pricing-card">
-        <h3>Creator+</h3>
-        <div class="price">$29 <span>/ month</span></div>
-        <p>For agencies &amp; power users</p>
-        <ul>
-          <li>Unlimited videos</li>
-          <li>Multi-language (coming soon)</li>
-          <li>Save history</li>
-          <li>API access</li>
-          <li>Priority processing</li>
-        </ul>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-<!-- ── FAQ ────────────────────────────────────────────────────────────── -->
-<section class="faq" id="faq">
-  <div class="container">
-    <h2>Frequently Asked Questions</h2>
-
-    <div class="faq-item">
-      <div class="faq-question">Is this legal?</div>
-      <div class="faq-answer">Yes. We only access publicly available transcripts/captions that YouTube makes available. We do not download, host, or redistribute any video content.</div>
-    </div>
-
-    <div class="faq-item">
-      <div class="faq-question">Do you download videos?</div>
-      <div class="faq-answer">No. We never download or store any video files. We only process the text transcript data that YouTube provides publicly.</div>
-    </div>
-
-    <div class="faq-item">
-      <div class="faq-question">What if a transcript is unavailable?</div>
-      <div class="faq-answer">Some videos don't have captions enabled. In that case, we'll show a clear error message. Try a video that has subtitles or auto-captions enabled.</div>
-    </div>
-
-    <div class="faq-item">
-      <div class="faq-question">Which videos are supported?</div>
-      <div class="faq-answer">Any public YouTube video that has auto-generated or manually added captions. This covers the vast majority of popular videos.</div>
-    </div>
-
-    <div class="faq-item">
-      <div class="faq-question">Is there a free version?</div>
-      <div class="faq-answer">Yes! The free tier lets you process 3 videos per day with no signup required. No credit card needed.</div>
-    </div>
-
-    <div class="faq-item">
-      <div class="faq-question">How accurate is the AI summary?</div>
-      <div class="faq-answer">We use Google Gemini 1.5 Flash, one of the most capable AI models available. Summaries are highly accurate for well-captioned videos.</div>
-    </div>
-
-  </div>
-</section>
-
-<!-- ── Footer ─────────────────────────────────────────────────────────── -->
-<footer>
-  <div class="container">
-    <div class="footer-inner">
-      <div class="logo">VideoNotes AI</div>
-      <div class="footer-links">
-        <a href="/privacy">Privacy Policy</a>
-        <a href="/terms">Terms of Service</a>
-        <a href="/dmca">DMCA</a>
-        <a href="mailto:contact@videonotesai.com">Contact</a>
-      </div>
-      <p class="footer-disclaimer">
-        This tool extracts publicly available transcripts for educational and productivity purposes.
-        We do not host or distribute copyrighted video content.
-        YouTube® is a trademark of Google LLC.
-      </p>
-      <p>&copy; 2026 VideoNotes AI. All rights reserved.</p>
-    </div>
-  </div>
-</footer>
 
 <script src="/static/js/main.js"></script>
 </body>
