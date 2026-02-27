@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VideoNotes AI — Turn YouTube Videos Into Smart Notes & Blog Posts</title>
+  <meta name="description" content="Paste any YouTube URL and instantly get AI-generated summaries, key points, timestamps, blog drafts, and Twitter threads. Free to use. No signup required." />
+  <meta name="keywords" content="youtube transcript generator, summarize youtube video, AI video summarizer, youtube notes tool, convert youtube to blog, youtube to blog post, youtube summary free" />
+  <link rel="canonical" href="https://videonotesai.com/" />
+
+  <!-- Open Graph / Social sharing -->
+  <meta property="og:title" content="VideoNotes AI — Turn YouTube Videos Into Smart Notes" />
+  <meta property="og:description" content="Paste any YouTube URL → Get AI summaries, key points, blog drafts & Twitter threads instantly. Free, no signup." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://videonotesai.com/" />
+  <meta property="og:image" content="https://videonotesai.com/static/og-image.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:site_name" content="VideoNotes AI" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="VideoNotes AI — Turn YouTube Videos Into Smart Notes" />
+  <meta name="twitter:description" content="Paste any YouTube URL → Get AI summaries, key points, blog drafts & Twitter threads instantly. Free, no signup." />
+  <meta name="twitter:image" content="https://videonotesai.com/static/og-image.png" />
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="/static/favicon.svg" />
+  <link rel="shortcut icon" href="/static/favicon.svg" />
+
+  <link rel="stylesheet" href="/static/css/style.css" />
+
+  <!-- Google Analytics — replace G-XXXXXXXXXX with your Measurement ID -->
+  <!-- <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-XXXXXXXXXX');
+  </script> -->
+</head>
+<body>
+
+<!-- ── Header ─────────────────────────────────────────────────────────── -->
+<header>
+  <div class="container nav">
+    <div class="logo">VideoNotes AI</div>
+    <nav>
+      <a href="#how-it-works">How It Works</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+  </div>
+</header>
+
+<!-- ── Hero ───────────────────────────────────────────────────────────── -->
+<section class="hero">
+  <div class="container">
+    <h1>Turn Any YouTube Video Into Smart Notes &amp; Blog Posts</h1>
+    <p class="sub-headline">Extract transcripts, AI summaries, key points, timestamps, blog drafts, and social posts — instantly. Free. No signup.</p>
+
+    <div class="input-group">
+      <input type="text" id="urlInput" placeholder="Paste YouTube URL here..." autocomplete="off" spellcheck="false" />
+      <button class="btn-primary" id="generateBtn" onclick="processVideo()">Generate Notes</button>
+    </div>
+
+    <p class="hero-note">Free to try &bull; No signup required &bull; ~10 second processing</p>
+
+    <!-- Error message -->
+    <div id="errorMsg" class="hidden"></div>
+  </div>
+</section>
+
+<!-- ── Loading State ──────────────────────────────────────────────────── -->
+<div id="loadingState" class="container hidden">
+  <div class="spinner"></div>
+  <p id="loadingMsg">Extracting transcript...</p>
+  <div class="loading-steps">
+    <div class="loading-step" id="step1">
+      <span class="step-dot active"></span>
+      <span>Extracting transcript</span>
+    </div>
+    <div class="loading-step" id="step2">
+      <span class="step-dot"></span>
+      <span>Generating AI summary</span>
+    </div>
+    <div class="loading-step" id="step3">
+      <span class="step-dot"></span>
+      <span>Building your content</span>
+    </div>
+    <div class="loading-step" id="step4">
+      <span class="step-dot"></span>
+      <span>Almost done...</span>
+    </div>
+  </div>
+</div>
+
+<!-- ── Results Section ────────────────────────────────────────────────── -->
+<section id="resultsSection" class="container hidden">
+
+  <!-- Video Thumbnail -->
+  <div id="videoThumb" class="video-thumb-wrap hidden">
+    <img id="videoThumbImg" src="" alt="Video thumbnail" class="video-thumb-img" />
+    <div id="videoThumbTitle" class="video-thumb-title"></div>
+  </div>
+
+  <div class="result-header">
+    <h2>✅ Your Content is Ready</h2>
+    <div class="result-actions">
+      <button class="btn-copy-all" onclick="copyAll()">📋 Copy All</button>
+      <button class="btn-download" onclick="downloadTxt()">📥 Download TXT</button>
+      <button class="btn-download" onclick="downloadPdf()" style="background:#10b981;">🖨️ Save as PDF</button>
+      <button class="btn-secondary" onclick="processAnother()">🔄 Process Another</button>
+    </div>
+  </div>
+
+  <!-- Summary -->
+  <div class="result-card">
+    <div class="card-header">
+      <div class="card-title">📝 Summary</div>
+      <button class="btn-copy" onclick="copySection('summaryText', this)">Copy</button>
+    </div>
+    <div class="card-body">
+      <p id="summaryText"></p>
+    </div>
+  </div>
+
+  <!-- Key Points -->
+  <div class="result-card">
+    <div class="card-header">
+      <div class="card-title">🎯 Key Points</div>
+      <button class="btn-copy" onclick="copySection('keyPointsList', this)">Copy</button>
+    </div>
+    <div class="card-body">
+      <ul class="bullet-list" id="keyPointsList"></ul>
+    </div>
+  </div>
+
+  <!-- Timestamps -->
+  <div class="result-card">
+    <div class="card-header">
+      <div class="card-title">⏱️ Timestamps</div>
+      <button class="btn-copy" onclick="copySection('timestampsList', this)">Copy</button>
+    </div>
+    <div class="card-body">
+      <ul class="timestamp-list" id="timestampsList"></ul>
+    </div>
+  </div>
+
+  <!-- Takeaways -->
+  <div class="result-card">
+    <div class="card-header">
+      <div class="card-title">💡 Key Takeaways</div>
+      <button class="btn-copy" onclick="copySection('takeawaysList', this)">Copy</button>
+    </div>
+    <div class="card-body">
+      <ul class="takeaway-list" id="takeawaysList"></ul>
+    </div>
+  </div>
+
+  <!-- Twitter Hooks -->
+  <div class="result-card">
+    <div class="card-header">
+      <div class="card-title">🐦 Twitter / X Hooks</div>
+      <button class="btn-copy" onclick="copySection('hooksList', this)">Copy</button>
+    </div>
+    <div class="card-body">
+      <ul class="bullet-list" id="hooksList"></ul>
+    </div>
+  </div>
+
+  <!-- Blog Draft -->
+  <div class="result-card">
+    <div class="card-header">
+      <div class="card-title">📄 Blog Draft</div>
+      <button class="btn-copy" onclick="copySection('blogDraftText', this)">Copy</button>
+    </div>
+    <div class="card-body">
+      <p id="blogDraftText" class="blog-draft"></p>
+    </div>
+  </div>
+
+  <div style="text-align:center; margin-top: 24px;">
+    <button class="btn-secondary" onclick="processAnother()">🔄 Process Another Video</button>
+  </div>
+
+  <!-- AdSense Slot (add your unit ID when approved) -->
+  <!-- <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-XXXXXXXX" data-ad-slot="XXXXXXXX" data-ad-format="auto"></ins> -->
+
+</section>
+
+<!-- ── How It Works ───────────────────────────────────────────────────── -->
+<section class="how-it-works" id="how-it-works">
+  <div class="container">
+    <h2>How It Works</h2>
+    <div class="steps">
+      <div class="step">
+        <div class="step-icon">🔗</div>
+        <h3>1. Paste a YouTube Link</h3>
+        <p>Copy the URL from any public YouTube video and paste it above.</p>
+      </div>
+      <div class="step">
+        <div class="step-icon">🤖</div>
+        <h3>2. AI Analyzes It</h3>
+        <p>We extract the transcript and run it through Google Gemini AI in seconds.</p>
+      </div>
+      <div class="step">
+        <div class="step-icon">📋</div>
+        <h3>3. Get Structured Content</h3>
+        <p>Download notes, copy summaries, or use the blog draft directly.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Features ───────────────────────────────────────────────────────── -->
+<section class="features">
+  <div class="container">
+    <h2>Everything You Get</h2>
+    <div class="features-grid">
+      <div class="feature-item"><span>📝</span>AI Summary</div>
+      <div class="feature-item"><span>🎯</span>Key Points</div>
+      <div class="feature-item"><span>⏱️</span>Timestamps</div>
+      <div class="feature-item"><span>💡</span>Key Takeaways</div>
+      <div class="feature-item"><span>🐦</span>Twitter Hooks</div>
+      <div class="feature-item"><span>📄</span>Blog Draft</div>
+      <div class="feature-item"><span>📥</span>TXT Download</div>
+      <div class="feature-item"><span>📋</span>Copy to Clipboard</div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Pricing ────────────────────────────────────────────────────────── -->
+<section class="pricing" id="pricing">
+  <div class="container">
+    <h2>Simple, Transparent Pricing</h2>
+    <div class="pricing-grid">
+
+      <div class="pricing-card">
+        <h3>Free</h3>
+        <div class="price">$0 <span>/ forever</span></div>
+        <p>Perfect to get started</p>
+        <ul>
+          <li>3 videos per day</li>
+          <li>AI Summary</li>
+          <li>Key Points</li>
+          <li>Timestamps</li>
+          <li>TXT Download</li>
+        </ul>
+      </div>
+
+      <div class="pricing-card popular">
+        <div class="popular-badge">Most Popular</div>
+        <h3>Pro</h3>
+        <div class="price">$12 <span>/ month</span></div>
+        <p>For creators &amp; students</p>
+        <ul>
+          <li>50 videos per month</li>
+          <li>Full repurposing suite</li>
+          <li>Blog draft generator</li>
+          <li>Twitter threads</li>
+          <li>No ads</li>
+        </ul>
+      </div>
+
+      <div class="pricing-card">
+        <h3>Creator+</h3>
+        <div class="price">$29 <span>/ month</span></div>
+        <p>For agencies &amp; power users</p>
+        <ul>
+          <li>Unlimited videos</li>
+          <li>Multi-language (coming soon)</li>
+          <li>Save history</li>
+          <li>API access</li>
+          <li>Priority processing</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── FAQ ────────────────────────────────────────────────────────────── -->
+<section class="faq" id="faq">
+  <div class="container">
+    <h2>Frequently Asked Questions</h2>
+
+    <div class="faq-item">
+      <div class="faq-question">Is this legal?</div>
+      <div class="faq-answer">Yes. We only access publicly available transcripts/captions that YouTube makes available. We do not download, host, or redistribute any video content.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question">Do you download videos?</div>
+      <div class="faq-answer">No. We never download or store any video files. We only process the text transcript data that YouTube provides publicly.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question">What if a transcript is unavailable?</div>
+      <div class="faq-answer">Some videos don't have captions enabled. In that case, we'll show a clear error message. Try a video that has subtitles or auto-captions enabled.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question">Which videos are supported?</div>
+      <div class="faq-answer">Any public YouTube video that has auto-generated or manually added captions. This covers the vast majority of popular videos.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question">Is there a free version?</div>
+      <div class="faq-answer">Yes! The free tier lets you process 3 videos per day with no signup required. No credit card needed.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question">How accurate is the AI summary?</div>
+      <div class="faq-answer">We use Google Gemini 1.5 Flash, one of the most capable AI models available. Summaries are highly accurate for well-captioned videos.</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── Footer ─────────────────────────────────────────────────────────── -->
+<footer>
+  <div class="container">
+    <div class="footer-inner">
+      <div class="logo">VideoNotes AI</div>
+      <div class="footer-links">
+        <a href="/privacy">Privacy Policy</a>
+        <a href="/terms">Terms of Service</a>
+        <a href="/dmca">DMCA</a>
+        <a href="mailto:contact@videonotesai.com">Contact</a>
+      </div>
+      <p class="footer-disclaimer">
+        This tool extracts publicly available transcripts for educational and productivity purposes.
+        We do not host or distribute copyrighted video content.
+        YouTube® is a trademark of Google LLC.
+      </p>
+      <p>&copy; 2026 VideoNotes AI. All rights reserved.</p>
+    </div>
+  </div>
+</footer>
+
+<script src="/static/js/main.js"></script>
+</body>
+</html>
